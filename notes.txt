@@ -1,0 +1,20 @@
+  # python -m venv myenv   
+  # myenv\Scripts\activate  
+
+-------------------------------------------------------------------------------------------
+
+# -- Terminal 1: --
+# uvicorn ticketing.api:app --reload --port 8000
+
+# -- Terminal 2: --
+# python test_workflow.py (milestone 5)
+# streamlit run app.py (milestone 6 - streamlit app)
+
+-------------------------------------------------------------------------------------------
+
+I forgot my password and cannot login to my account.
+
+Someone hacked my account and changed my email.
+I cannot access my account anymore.
+
+-------------------------------------------------------------------------------------------
