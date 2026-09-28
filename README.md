@@ -37,7 +37,7 @@ tests/
 Clone the repository:
 ```
 git clone <your-repository-url>
-cd CustomerSupportAutomation
+cd Customer-Support-Automation
 ```
 
 Create a virtual environment:
@@ -47,7 +47,7 @@ python -m venv myvenv
 
 Activate it on Windows:
 ```
-Activate it on Windows:
+.\myvenv\Scripts\Activate 
 ```
 
 Install dependencies:
@@ -57,7 +57,14 @@ pip install -r requirements.txt
 
 Create .env:
 ```
+GOOGLE_API_KEY=your_google_api_key_here
 OPENAI_API_KEY=your_api_key_here
+```
+
+## Create Vector Store 
+Add the required documents to reate a vector store in "knowledge_base" folder and run:
+```
+python ingestion.py
 ```
 
 ## Run
@@ -73,7 +80,7 @@ http://localhost:8501
 
 ## Running the Ticketing API
 The project also contains a FastAPI-based mock ticketing service.
-
+Open another terminal,
 From the project root, run:
 ```
 uvicorn ticketing.api:app --reload --port 8000
