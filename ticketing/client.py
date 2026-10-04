@@ -30,3 +30,13 @@ class TicketingClient:
         response.raise_for_status()
 
         return response.json()
+
+    def get_ticket(self, ticket_id):
+        response = requests.get(
+            f"{self.base_url}/tickets/{ticket_id}",
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        return response.json()

@@ -43,3 +43,5 @@ docker-compose.yaml
 
 # AWS / deployment artifacts
 .aws/
+
+ticketing/tickets.db

@@ -1,0 +1,144 @@
+pip install "mcp[cli]"
+mcp --help
+
+- The current v2 SDK uses MCPServer; older tutorials commonly show FastMCP
+ 
+-- pip install mcp.server -- in root directory
+----------------------------------------------------------------------
+
+(myvenv) PS C:\Users\DELL\Documents\HCLTech PoCs\Customer-Support-Automation> python --version
+>> pip --version
+>> node --version
+>> npm --version
+>> where.exe node
+>> where.exe npm
+
+Python 3.11.9
+pip 24.0 from C:\Users\DELL\Documents\HCLTech PoCs\Customer-Support-Automation\myvenv\Lib\site-packages\pip (python 3.11)
+v21.6.0
+10.3.0
+C:\Program Files\nodejs\node.exe
+C:\Program Files\nodejs\npm
+C:\Program Files\nodejs\npm.cmd
+C:\Users\DELL\AppData\Roaming\npm\npm
+C:\Users\DELL\AppData\Roaming\npm\npm.cmd
+----------------------------------------------------------------------
+
+(myvenv) PS C:\Users\DELL\Documents\HCLTech PoCs\Customer-Support-Automation> node --version
+>> npm --version
+>> where.exe node
+>> python --version
+v24.21.0
+10.3.0
+C:\Program Files\nodejs\node.exe
+Python 3.11.9
+----------------------------------------------------------------------
+
+npx --yes @modelcontextprotocol/inspector --help
+npm cache verify
+
+npx --yes @modelcontextprotocol/inspector --cli python .\mcp\server.py --method tools/list
+npx --yes @modelcontextprotocol/inspector --cli python .\mcp\server.py --method tools/call --tool-name get_ticket --tool-arg ticket_id=INC1001
+----------------------------------------------------------------------
+-- miltestone 1 - server.py is working in the above flow
+
+MCP Inspector
+    ↓
+mcp_integration/server.py
+    ↓
+create_ticket()
+    ↓
+ticketing/client.py
+    ↓
+POST /tickets
+    ↓
+ticketing/api.py
+    ↓
+Ticket created
+
+
+----------------------------------------------------------------------
+
+python -c "from ticketing.client import TicketingClient; print(TicketingClient().get_ticket('TICKET-8ABD9B10'))"
+
+----------------------------------------------------------------------
+Before:
+
+LangGraph
+   ↓
+TicketingClient
+   ↓
+FastAPI
+   ↓
+SQLite
+
+----------------------------------------------------------------------
+After:
+
+LangGraph
+   ↓
+MCP Client
+   ↓
+MCP Server
+   ↓
+TicketingClient
+   ↓
+FastAPI
+   ↓
+SQLite
+----------------------------------------------------------------------
+
+User ticket
+    ↓
+LangGraph
+    ↓
+classify_ticket
+    ↓
+Escalation = Yes
+    ↓
+escalate_ticket
+    ↓
+mcp_integration/client.py
+    ↓
+MCP Server
+    ↓
+create_ticket tool
+    ↓
+TicketingClient
+    ↓
+FastAPI
+    ↓
+SQLite
+----------------------------------------------------------------------
+Normal Ticket:
+classify → respond → END
+
+Escalated Ticket:
+classify → escalate → MCP → ticketing API → SQLite → END
+----------------------------------------------------------------------
+MCP integration is now working end-to-end.
+
+At this point, I would not change the architecture further. You have successfully implemented:
+
+MCP server with create_ticket and get_ticket
+SQLite persistence
+MCP client
+LangGraph → MCP integration
+Existing FastAPI ticketing API preserved
+Normal and escalation paths tested
+Ticket retrieval through MCP verified
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+---- change gemini model to openai model----
+
+---- only escalated tickets have been stored in tickets.db. But I like to store all tickets irrespective of whether it is escalated or not.. I don't know whether it is necessary or not. 
+
+---- also, If the user is asking the same question (that is the ticket which escalated before), now it is escalating again. But I think, I shouldn't, instead if it is resolved by support team. That should be documented and should be fed into the vector db. The system should use this historical data to answer instead of escalating.
+
+----------------------------------------------------------------------
